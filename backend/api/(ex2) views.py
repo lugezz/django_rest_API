@@ -1,14 +1,12 @@
-from itertools import product
-import json
-
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 
-from products.models import *
+from products.models import Product
+
 
 def api_home(request):
     model_data = Product.objects.first()
-    print (model_data.title, model_data.content)
+    print(model_data.title, model_data.content)
 
     data = {}
 
@@ -18,6 +16,6 @@ def api_home(request):
         # data['content'] = model_data.content
         # data['price'] = model_data.price
         # Mejor serializar haciendo un diccionario Python desde Model
-        data = model_to_dict(model_data) # puedo declarar las fields como argumento
-    
+        data = model_to_dict(model_data)  # puedo declarar las fields como argumento
+
     return JsonResponse(data)
