@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Product(models.Model):
     title = models.CharField(max_length=120)
     content = models.CharField(max_length=200, blank=True, null=True)
@@ -10,8 +11,4 @@ class Product(models.Model):
 
     @property
     def sale_price(self):
-        return "%.2f" %(float(self.price)*0.8) 
-
-
-
-
+        return f"{float(self.price)*0.8:.2f}"

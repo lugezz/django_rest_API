@@ -26,11 +26,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #Paquetes
+    # Paquetes
     'rest_framework',
     'rest_framework.authtoken',
 
-    #Míos
+    # Míos
     'api',
     'products',
 ]
