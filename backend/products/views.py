@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from api.mixins import StaffEditorPermissionMixin
+from api.mixins import StaffEditorPermissionMixin, UserQuerysetMixin
 from products.models import Product
 from products.serializers import ProductSerializer
 
@@ -10,7 +10,10 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     serializer_class = ProductSerializer
 
 
-class ProductUpdateAPIView(StaffEditorPermissionMixin, generics.UpdateAPIView):
+class ProductUpdateAPIView(UserQuerysetMixin,
+                           StaffEditorPermissionMixin,
+                           generics.UpdateAPIView
+                           ):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
@@ -28,7 +31,10 @@ class ProductDeleteAPIView(StaffEditorPermissionMixin, generics.DestroyAPIView):
     lookup_field = 'pk'
 
 
-class ProductListCreateAPIView(StaffEditorPermissionMixin, generics.ListCreateAPIView):
+class ProductListCreateAPIView(UserQuerysetMixin,
+                               StaffEditorPermissionMixin,
+                               generics.ListCreateAPIView
+                               ):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -52,4 +58,4 @@ class ProductListCreateAPIView(StaffEditorPermissionMixin, generics.ListCreateAP
         if content is None:
             content = title
 
-        serializer.save(content=content)  # Listo, lo graba
+        serializer.save(user=self.request.user, content=content)  # Listo, lo graba
