@@ -16,6 +16,8 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
     serializer_class = ProductSerializer
     lookup_field = 'pk'
 
+    permission_classes = [isStaffEditorPermission]
+
     def perform_update(self, serializer):
         instance = serializer.save()
 
@@ -45,7 +47,7 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     # misos definidos en Django Admin
     # La contra de Django permissions es que es limitado a cambios
     # Pero siempre va a dejar ver!
-    permission_classes = [permissions.IsAdminUser, isStaffEditorPermission]
+    permission_classes = [permissions.DjangoModelPermissions]
 
     def perform_create(self, serializer):  # Frena antes de grabar
         title = serializer.validated_data.get('title')
