@@ -1,8 +1,7 @@
-from rest_framework import authentication, generics, permissions
+from rest_framework import generics
 
-from api.authentication import TokenAuthentication
+from api.mixins import StaffEditorPermissionMixin
 from products.models import Product
-from products.permissions import isStaffEditorPermission
 from products.serializers import ProductSerializer
 
 
@@ -11,12 +10,10 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
     serializer_class = ProductSerializer
 
 
-class ProductUpdateAPIView(generics.UpdateAPIView):
+class ProductUpdateAPIView(StaffEditorPermissionMixin, generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
-
-    permission_classes = [isStaffEditorPermission]
 
     def perform_update(self, serializer):
         instance = serializer.save()
@@ -25,29 +22,29 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
             instance.content = instance.title
 
 
-class ProductDeleteAPIView(generics.DestroyAPIView):
+class ProductDeleteAPIView(StaffEditorPermissionMixin, generics.DestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'pk'
 
 
-class ProductListCreateAPIView(generics.ListCreateAPIView):
+class ProductListCreateAPIView(StaffEditorPermissionMixin, generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
     # Permisos y autenticaciones
-    authentication_classes = [
-        authentication.SessionAuthentication,
-        # authentication.TokenAuthentication #Original
-        TokenAuthentication  # Modificado por nosotros
-        ]
+    # Definido en settings ahora
+    # authentication_classes = [
+    #    authentication.SessionAuthentication,
+    #    authentication.TokenAuthentication #Original
+    #    TokenAuthentication  # Modificado por nosotros
+    #    ]
     # permission_classes = [permissions.IsAuthenticated] Si está autenticado
     # puede hacer todo
     # permission_classes = [permissions.DjangoModelPermissions] #Aquí sigue los per-
     # misos definidos en Django Admin
     # La contra de Django permissions es que es limitado a cambios
     # Pero siempre va a dejar ver!
-    permission_classes = [permissions.DjangoModelPermissions]
 
     def perform_create(self, serializer):  # Frena antes de grabar
         title = serializer.validated_data.get('title')

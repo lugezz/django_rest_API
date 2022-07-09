@@ -2,11 +2,12 @@ import requests
 from getpass import getpass
 
 endpoint = 'http://localhost:8000/api/auth/'
-password = getpass()
+username = input("What's your username?\n")
+password = getpass("What's your password?\n")
 
 auth_response = requests.post(
     endpoint,
-    json={'username': 'staff', 'password': password}
+    json={'username': username, 'password': password}
     )
 print(auth_response.json())
 
