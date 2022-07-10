@@ -32,6 +32,7 @@ INSTALLED_APPS = [
 
     # Mine
     'api',
+    'articles',
     'products',
     'search',
 ]
