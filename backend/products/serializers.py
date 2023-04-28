@@ -6,6 +6,9 @@ from products.models import Product
 from products.validators import validate_no_hello_in_title, unique_validator
 
 
+# Serializer: model_instance --> Python dict --> JSON data
+
+
 class ProductSerializer(serializers.ModelSerializer):
     edit_url = serializers.SerializerMethodField(read_only=True)
     title = serializers.CharField(validators=[validate_no_hello_in_title, unique_validator])
