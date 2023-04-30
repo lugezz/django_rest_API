@@ -1,8 +1,10 @@
+from rest_framework.permissions import IsAdminUser
+
 from api.permissions import isStaffEditorPermission
 
 
 class StaffEditorPermissionMixin():
-    permission_classes = [isStaffEditorPermission]
+    permission_classes = [IsAdminUser, isStaffEditorPermission]
 
 
 class UserQuerysetMixin():

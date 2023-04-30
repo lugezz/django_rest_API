@@ -15,7 +15,7 @@ if auth_response.status_code == 200:
     token = auth_response.json()['token']
     # Si lo borro de admin, crea uno distinto
     headers = {
-        'Authorization': f'Bearer {token}'
+        'Authorization': f'Token {token}'
     }
 
     endpoint = 'http://localhost:8000/api/products/'
