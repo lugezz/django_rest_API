@@ -10,6 +10,9 @@ class ProductDetailAPIView(UserQuerysetMixin,
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+    # Default
+    # lookup_field = 'pk'
+
 
 class ProductUpdateAPIView(UserQuerysetMixin,
                            StaffEditorPermissionMixin,
@@ -17,7 +20,7 @@ class ProductUpdateAPIView(UserQuerysetMixin,
                            ):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    lookup_field = 'pk'
+    # lookup_field = 'pk'
 
     def perform_update(self, serializer):
         instance = serializer.save()

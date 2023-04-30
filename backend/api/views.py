@@ -1,12 +1,13 @@
 import json
 
+from django.forms import model_to_dict
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from products.serializers import ProductSerializer
 
-# from products.models import Product
+from products.models import Product
 
 
 @api_view(['POST'])
@@ -17,8 +18,8 @@ def api_home(request, *args, **kwargs):
     serializer = ProductSerializer(data=request.data)
 
     if serializer.is_valid(raise_exception=True):  # Retorning very detailed info of error
-        print(serializer.data)
         data = serializer.data
+        print(data)
 
         return Response(data)
 
@@ -42,3 +43,28 @@ def raw_home(request, *args, **kwargs):
     # return JsonResponse({"message": "Hello World, this is your API response"})
 
     return JsonResponse(data)
+
+
+def raw_product(request, *args, **kwargs):
+    model_data = Product.objects.all().order_by('?').first()
+    data = {}
+
+    if model_data is None:
+        return JsonResponse({"message": "No data found"})
+    else:
+        data['id'] = model_data.id
+        data['title'] = model_data.title
+        data['content'] = model_data.content
+        data['price'] = model_data.price
+
+    return JsonResponse(data)
+
+
+def mdt_product(request, *args, **kwargs):
+    model_data = Product.objects.all().order_by('?').first()
+
+    if model_data is None:
+        return JsonResponse({"message": "No data found"})
+    else:
+        data = model_to_dict(model_data)
+        return JsonResponse(data)
